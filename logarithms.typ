@@ -13,7 +13,7 @@
     #v(8pt)
     #text(40pt, weight: "bold", fill: white, tracking: 3pt)[Logarithm Tables]
     #v(30pt)
-    #text(19pt, fill: rgb("#a8c9e0"))[Common Logarithms • Base 10]
+    #text(19pt, fill: rgb("#a8c9e0"))[Common Base 10 Logarithms]
     #v(50pt)
 
     #stack(dir: ltr, spacing: 18pt,
@@ -26,11 +26,13 @@
 
     #v(50pt)
     #text(17pt, fill: rgb("#b0d0e8"), style: "italic")[
-      Mantissas from 1.000000 to 9.999999
+      Mantissas from 0000000 to 9999566
     ]
 
     #text(14pt, fill: rgb("#7799cc"))[
-      Generated with Typst — #datetime.today().display("[month repr:long] [day], [year]")
+      Generated using Typst
+	  
+	  #datetime.today().display("[day] [month repr:short] [year]")
     ]
   ]
 )
@@ -48,9 +50,9 @@
 
 #align(center)[= Log Table Instructions]
 #v(1em)
-These are seven-figure common (base-10) logarithms.
+The table consists of seven-figure common (base-10) logarithms.
 
-Each table entry is the mantissa × 10 000 000 (i.e. 7 decimal places).
+Each table entry is the mantissa × 10 000 000 (i.e. seven digits).
 
 == Finding the Logarithm
 Write the number in scientific notation:
@@ -62,14 +64,17 @@ Look up the first 6–7 digits of m in the tables → 7-digit mantissa
 Add the characteristic k
 
 Example:
+
 - 42370 = 4.237 × 10⁴ → table gives 6270585 → log₁₀ = 4.6270585
 
 == Multiplication
 log(a × b) = log a + log b
 
-Add the logarithms (carry over 10s as needed) → antilog of the sum.
+Add logarithms (carry over 10s as needed) → antilog of the sum.
 
-Example: 42.37 × 8.194
+Example:
+
+- 42.37 × 8.194
 - log(42.37) = 1.6270585
 - log(8.194) = 0.9134960
 - Sum = 2.5405545 → antilog ≈ 347.18
@@ -79,7 +84,9 @@ log(a ÷ b) = log a − log b
 
 Subtract (borrow 10 if needed) → antilog.
 
-Example: 347.2 ÷ 8.194
+Example:
+
+- 347.2 ÷ 8.194
 - log(347.2) ≈ 2.5405797
 - log(8.194) = 0.9134960
 - Difference = 1.6270837 → antilog ≈ 42.37 (checks out!)
@@ -90,6 +97,7 @@ Example: 347.2 ÷ 8.194
 log(aⁿ) = n × log a → multiply log by n → antilog.
 
 Examples:
+
 - 2.5⁵ → 5 × 0.3979400 = 1.9897000 → antilog ≈ 97.65625
 - 9.1³ → 3 × 0.9590414 = 2.8771242 → antilog ≈ 753.571
 
@@ -97,6 +105,7 @@ Examples:
 log(√[n] a) = log a ÷ n → divide log by n → antilog.
 
 Examples:
+
 - √7420 → log(7420) = 3.8704039 → divide by 2 = 1.93520195 → antilog ≈ 86.14
 - ∛68.92 → log(68.92) = 1.8383453 → divide by 3 ≈ 0.6127818 → antilog ≈ 4.098
 
@@ -112,24 +121,33 @@ For numbers not exactly listed in the table, use interpolation between the two c
 === Linear Interpolation
 Find the two closest table entries (e.g., for m = 1.23456, look up 1234 and 1235).
 Compute the difference in mantissas and proportionally add based on the fractional part.
-Example: log(1.23456)
-Table for 1234: 0914914
-Table for 1235: 0918515
-Difference = 3601
-Fractional part = 0.6 (since 1.23456 is 0.6 between 1.234 and 1.235, assuming scaled)
-Interpolated mantissa = 0914914 + 0.6 × 3601 ≈ 0914914 + 2161 = 0917075
-log ≈ 0.0917075
+
+Example:
+
+- log(1.23456)
+- Table for 1234: 0914914
+- Table for 1235: 0918515
+- Difference = 3601
+- Fractional part = 0.6 (since 1.23456 is 0.6 between 1.234 and 1.235, assuming scaled)
+- Interpolated mantissa = 0914914 + 0.6 × 3601 ≈ 0914914 + 2161 = 0917075
+- log ≈ 0.0917075
+
 For antilogs, reverse: interpolate linearly on the number based on the mantissa.
 
 === Logarithmic Interpolation (Recommended for Antilogs)
-For better accuracy in antilogs (where linear underestimates due to convexity), interpolate exponentially:
-For mantissa M between M1 (at n1) and M2 (at n2), f = (M - M1) / (M2 - M1)
-Interpolated n = n1^{(1-f)} × n2^f
+For better accuracy in antilogs (where linear interpolation underestimates due to convexity), use exponential interpolation:
+
+- For mantissa M between M1 (at n1) and M2 (at n2),\
+  f = (M - M1) / (M2 - M1)
+- Interpolated n = n1^{(1-f)} × n2^f
+
 Example: Antilog of 0.0917075 (between 1234 and 1235 as above)
-n1 = 1.234, n2 = 1.235
-M1 = 0.0914914, M2 = 0.0918515
-f ≈ 0.6
-n ≈ 1.234^{(0.4)} × 1.235^{0.6} (compute via logs if needed)
+
+- n1 = 1.234, n2 = 1.235
+- M1 = 0.0914914, M2 = 0.0918515
+- f ≈ 0.6
+- n ≈ 1.234^{(0.4)} × 1.235^{0.6} (compute via logs if needed)
+
 This reduces systematic errors in exponential scales.
 
 #pagebreak()
