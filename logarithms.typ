@@ -46,47 +46,59 @@
 #set page(margin: (top: 1.8cm, bottom: 1.8cm, left: 2.0cm, right: 1.4cm), numbering: "i")
 #counter(page).update(1)
 
-= Instructions for Using the Tables
-
+#align(center)[= Log Table Instructions]
+#v(1em)
 These are seven-figure common (base-10) logarithms.
-Each table entry is the mantissa × 10 000 000 (i.e. seven decimal places).
+
+Each table entry is the mantissa × 10 000 000 (i.e. 7 decimal places).
 
 == Finding the Logarithm
 Write the number in scientific notation:
-any number = m × 10ᵏ where 1 ≤ m < 10
+
+- number = m × 10ᵏ where 1 ≤ m < 10
 
 Look up the first 6–7 digits of m in the tables → 7-digit mantissa
+
 Add the characteristic k
+
 Example:
-42370 = 4.237 × 10⁴ → table gives 6270585 → log₁₀ = 4.6270585
+- 42370 = 4.237 × 10⁴ → table gives 6270585 → log₁₀ = 4.6270585
 
 == Multiplication
 log(a × b) = log a + log b
+
 Add the logarithms (carry over 10s as needed) → antilog of the sum.
+
 Example: 42.37 × 8.194
-log(42.37) = 1.6270585
-log(8.194) = 0.9134960
-Sum = 2.5405545 → antilog ≈ 347.18
+- log(42.37) = 1.6270585
+- log(8.194) = 0.9134960
+- Sum = 2.5405545 → antilog ≈ 347.18
 
 == Division
 log(a ÷ b) = log a − log b
+
 Subtract (borrow 10 if needed) → antilog.
+
 Example: 347.2 ÷ 8.194
-log(347.2) ≈ 2.5405797
-log(8.194) = 0.9134960
-Difference = 1.6270837 → antilog ≈ 42.37 (checks out!)
+- log(347.2) ≈ 2.5405797
+- log(8.194) = 0.9134960
+- Difference = 1.6270837 → antilog ≈ 42.37 (checks out!)
+
+#pagebreak()
 
 == Powers and Exponentiation
 log(aⁿ) = n × log a → multiply log by n → antilog.
+
 Examples:
-2.5⁵ → 5 × 0.3979400 = 1.9897000 → antilog ≈ 97.65625
-9.1³ → 3 × 0.9590414 = 2.8771242 → antilog ≈ 753.571
+- 2.5⁵ → 5 × 0.3979400 = 1.9897000 → antilog ≈ 97.65625
+- 9.1³ → 3 × 0.9590414 = 2.8771242 → antilog ≈ 753.571
 
 == Roots
 log(√[n] a) = log a ÷ n → divide log by n → antilog.
+
 Examples:
-√7420 → log(7420) = 3.8704039 → divide by 2 = 1.93520195 → antilog ≈ 86.14
-∛68.92 → log(68.92) = 1.8383453 → divide by 3 ≈ 0.6127818 → antilog ≈ 4.098
+- √7420 → log(7420) = 3.8704039 → divide by 2 = 1.93520195 → antilog ≈ 86.14
+- ∛68.92 → log(68.92) = 1.8383453 → divide by 3 ≈ 0.6127818 → antilog ≈ 4.098
 
 == Finding the Antilogarithm (reverse lookup)
 Given a logarithm (e.g. 3.8496037):
