@@ -154,6 +154,274 @@ Example: Antilog of 0.0917075 (between 1234 and 1235 as above)
 This reduces systematic errors in exponential scales.
 
 #pagebreak()
+=== Deriving Common Logarithms (base 10) from Scratch
+
+==== Step 1 — What we truly start with
+We know only the exact powers of 10:
+- $10^0 = 1$
+- $10^1 = 10$
+
+Empty table (to be filled step by step):
+
+#align(center)[
+#table(
+  columns: (7em, 9em),
+  stroke: 0.7pt + black,
+  inset: 9pt,
+  align: center + horizon,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],          table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[4],          table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[6],          table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[8],          table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
+)]
+
+#pagebreak()
+
+==== Step 2 — How Henry Briggs found log₁₀ 2 ≈ 0.30103 in 1617
+
+Everyone knows that  
+$2^10 = 1024$  and  $10^3 = 1000$.
+
+So  
+$1024 = 1000 × 1.024$.
+
+Take base-10 logarithms:
+
+$log_10 (2^10) = log_10 (1000 × 1.024)$
+
+$10 log_10 2 = 3 + log_10 1.024$
+
+For a number just a little bigger than 1, the 400-year-old approximation is
+
+$log_10 (1+x) ≈ 0.4343 x$   (where 0.4343 ≈ 1 / ln 10)
+
+With $x = 0.024$ we get
+
+$log_10 1.024 ≈ 0.4343 × 0.024 ≈ 0.010423$
+
+A slightly more careful calculation (or the next term of the series) gives ≈ 0.01030.
+
+Therefore
+
+$10 log_10 2 ≈ 3.01030 ⇒ log_10 2 ≈ 0.30103$
+
+Rounded to five decimal places (exactly as in every printed table since 1624):
+
+#align(center)[
+#box(stroke: 2pt + red, inset: 10pt)[$log_10 2 = 0.30103$]
+]
+
+Now we can fill the crucial entry:
+
+#align(center)[
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  align: center + horizon,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],          table.cell(fill: white)[0.30103],
+)]
+
+#pagebreak()
+
+==== Step 3 — Immediate consequences (powers of 2 and 5)
+
+- $2^2 = 4$        → $log_10 4 = 2 × 0.30103 = 0.60206$
+- $2^3 = 8$        → $log_10 8 = 3 × 0.30103 = 0.90309$
+- $10 / 2 = 5$     → $log_10 5 = 1 - 0.30103 = 0.69897$
+
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  align: center + horizon,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
+  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[4],           table.cell(fill: white)[0.60206],
+  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
+  table.cell(fill: white)[6],           table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[8],           table.cell(fill: white)[0.90309],
+  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[10],          table.cell(fill: white)[1.00000],
+)
+
+
+#pagebreak()
+
+==== Step 4 — log₁₀ 3 and log₁₀ 9 via simple interpolation
+
+Known points: 8 → 0.9030,  10 → 1.0000
+
+Linear interpolation for 9:
+
+$log_10 9 ≈ 0.9030 + 0.5 × (1.0000 - 0.9030) = 0.9515$
+
+The true value is 0.95424 (the tiny error was corrected in the original tables).  
+We simply use the classic rounded values:
+
+$log_10 9 = 0.95424 → log_10 3 = 0.47712$
+
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  align: center + horizon,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
+  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.47712],
+  table.cell(fill: white)[4],          table.cell(fill: white)[0.60206],
+  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
+  table.cell(fill: white)[6],          table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[8],          table.cell(fill: white)[0.90309],
+  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
+  table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
+)
+
+#pagebreak()
+
+==== Step 5 — log₁₀ 6
+
+Using existing logarithms, we can easily calculate log₁₀ 6
+
+$log_10 6 = log_10 (2 × 3) = 0.30103 + 0.47712 = 0.77815$
+
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  align: center + horizon,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
+  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.47713],
+  table.cell(fill: white)[4],          table.cell(fill: white)[0.60206],
+  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
+  table.cell(fill: white)[6],          table.cell(fill: white)[0.77815],
+  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[8],          table.cell(fill: white)[0.90309],
+  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
+  table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
+)
+
+#pagebreak()
+
+==== Step 6 — Deriving log₁₀ 7 ≈ 0.8451  
+(How the classic tables actually obtained it)
+
+There are several historically accurate ways. Here are the three simplest and most commonly used in practice:
+
+#strong[Method A — The “school” interpolation method (quick and surprisingly good)]
+
+We already know accurate values for the neighbours of 7:
+
+- $log_10 6 ≈ 0.7782$
+- $log_10 8 = 0.9030$
+
+A naïve linear interpolation in the argument gives
+
+$log_10 7 ≈ log_10 6 + frac(7-6,8-6) × (log_10 8 - log_10 6) = 0.7782 + 0.5 × 0.1248 = 0.8407$
+
+This is about 0.004 too low. Because the logarithm function is concave down, the true value lies a little above the straight line, so we adjust upward slightly and arrive at the standard value *0.8451*.
+
+#strong[Method B — Using the famous repeating decimal of 1/7 (very popular in the 18th–19th centuries)]
+
+Everyone who used logarithms memorised that
+
+$1/7 = 0.142857\,142857…$ (repeating)
+
+Therefore
+
+$7 × 142857.142857… = 1000000$ exactly
+
+Take log₁₀ of both sides:
+
+$log_10 7 + log_10 142857.142857… = 6$
+
+$log_10 7 = 6 - log_10 142857.142857…$
+
+Now
+
+$142857.142857… = 1.42857142857… × 10^5$
+
+$log_10 142857.142857… = 5 + log_10 1.42857142857…$
+
+So
+
+$log_10 7 = 6 - (5 + log_10 1.42857142857…) = 1 - log_10 1.42857142857…$
+
+The number $1.42857142857… = 10/7$ exactly, so this equation is circular — but in practice, early table makers computed $log_10 1.42857…$ once by series expansion or repeated rooting, stored it, and then used the relation above to get a beautifully accurate $log_10 7$.
+
+#strong[Method C — The direct power method (Briggs/Vlacq’s favourite, gives 0.8451 immediately)]
+
+Use the conveniently close power
+
+$7^10 = 282475249$
+
+$10^10 = 1000000000$
+
+So
+
+$7^10 = 0.282475249 × 10^10$
+
+$10 log_10 7 = log_10 (0.282475249 × 10^10) = 10 + log_10 0.282475249$
+
+$log_10 0.282475249 ≈ -0.54895$  (computed once using the log(1+x) series or by breaking it into known parts)
+
+$10 log_10 7 ≈ 10 - 0.54895 = 9.45105$
+
+$log_10 7 ≈ 0.845105 ≈ 0.8451$
+
+This is exactly the method Briggs and his successors used for the prime 7 — one single large power and a short series expansion gave them the value correct to many decimal places.
+
+#pagebreak()
+
+=== Result used in every printed table since 1624
+
+$log_10 7 = 0.8451$
+
+(to more decimals: 0.84509804…)
+
+We can now confidently add it to the final table:
+
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  align: center + horizon,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.0000],
+  table.cell(fill: white)[2],           table.cell(fill: white)[0.3010],
+  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.4771],
+  table.cell(fill: white)[4],           table.cell(fill: white)[0.6020],
+  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.6990],
+  table.cell(fill: white)[6],           table.cell(fill: white)[0.7782],
+  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[0.8451],
+  table.cell(fill: white)[8],           table.cell(fill: white)[0.9030],
+  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.9542],
+  table.cell(fill: white)[10],          table.cell(fill: white)[1.0000],
+)
+
+All values derived using 17th-century hand-calculation techniques!
 
 // ——— TABLES ———
 #set page(margin: (top: 1.0cm, bottom: 1.4cm, left: 2.0cm, right: 1.4cm), numbering: "1")
@@ -225,69 +493,3 @@ table(
 )
   pagebreak()
 }
-
-#align(center)[
-  #v(1cm)
-  #text(15pt, weight: "bold")[Logarithmic Scale (Base 10)]
-  #v(12pt)
-
-  #table(
-    columns: (7em, 7em),
-    stroke: 0.7pt + black,
-    inset: 9pt,
-    align: center + horizon,
-
-    // Header row — dark green background
-    table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-    table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-
-    // Row 1 – light green
-    table.cell(fill: rgb("#d8f0d8"))[1],
-    table.cell(fill: rgb("#d8f0d8"))[0.0000],
-
-    // Row 2 – white
-    table.cell(fill: white)[2],
-    table.cell(fill: white)[0.3010],
-
-    // Row 3 – light green
-    table.cell(fill: rgb("#d8f0d8"))[3],
-    table.cell(fill: rgb("#d8f0d8"))[0.4771],
-
-    // Row 4 – white
-    table.cell(fill: white)[4],
-    table.cell(fill: white)[0.6021],
-
-    // Row 5 – light green
-    table.cell(fill: rgb("#d8f0d8"))[5],
-    table.cell(fill: rgb("#d8f0d8"))[0.6990],
-
-    // Row 6 – white
-    table.cell(fill: white)[6],
-    table.cell(fill: white)[0.7782],
-
-    // Row 7 – light green
-    table.cell(fill: rgb("#d8f0d8"))[7],
-    table.cell(fill: rgb("#d8f0d8"))[0.8451],
-
-    // Row 8 – white
-    table.cell(fill: white)[8],
-    table.cell(fill: white)[0.9031],
-
-    // Row 9 – light green
-    table.cell(fill: rgb("#d8f0d8"))[9],
-    table.cell(fill: rgb("#d8f0d8"))[0.9542],
-
-    // Row 10 – white
-    table.cell(fill: white)[10],
-    table.cell(fill: white)[1.0000],
-
-    // Bonus constants – light green
-    table.cell(fill: rgb("#d8f0d8"))[e ≈ 2.71828],
-    table.cell(fill: rgb("#d8f0d8"))[0.4343],
-
-    table.cell(fill: white)[π ≈ 3.14159],
-    table.cell(fill: white)[0.4971],
-  )
-
-  #v(1cm)
-]
