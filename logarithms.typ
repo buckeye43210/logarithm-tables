@@ -1,3 +1,4 @@
+#import "@preview/cetz:0.4.2"
 #set page(width: 5.5in, height: 8.5in, margin: 0pt)
 
 // ——— COVER ———
@@ -118,6 +119,8 @@ Characteristic 3 → place decimal point → 7073.0
 == Interpolation
 For numbers not exactly listed in the table, use interpolation between the two closest mantissas to estimate the value. Two methods are provided: linear (simple and sufficient for most cases) and logarithmic (more accurate for antilogs due to the exponential nature of the function).
 
+#pagebreak()
+
 === Linear Interpolation
 Find the two closest table entries (e.g., for m = 1.23456, look up 1234 and 1235).
 Compute the difference in mantissas and proportionally add based on the fractional part.
@@ -153,21 +156,20 @@ This reduces systematic errors in exponential scales.
 #pagebreak()
 
 // ——— TABLES ———
-#set page(margin: (top: 1.4cm, bottom: 1.8cm, left: 2.0cm, right: 1.4cm), numbering: "1")
+#set page(margin: (top: 1.0cm, bottom: 1.4cm, left: 2.0cm, right: 1.4cm), numbering: "1")
 #counter(page).update(1)
 
-= Seven-Digit Logs (1.000000 – 9.999999)
+// = Seven-Digit Logs (1.000000 – 9.999999)
 
 #for base in range(1, 10) {
   let start = base * 1000
 
   align(center)[
-    #text(11pt, weight: "bold")[Mantissas for #start – #(start + 999)]
+    #text(12pt, weight: "bold")[Mantissas for #start – #(start + 999)]
     #v(0.35cm)
   ]
 
   let cells = ()
-
   cells.push(table.header(
     [*N*], [*0*], [*1*], [*2*], [*3*], [*4*], [*5*], [*6*], [*7*], [*8*], [*9*]
   ))
@@ -177,7 +179,7 @@ This reduces systematic errors in exponential scales.
     let label = str(n).slice(0, 3)
 
     cells.push([
-      #set text(9pt, weight: "semibold")
+      #set text(8pt, weight: "semibold")
       #label
     ])
 
@@ -194,16 +196,98 @@ This reduces systematic errors in exponential scales.
     }
   }
 
-  table(
-    columns: 11,
-    column-gutter: 1.5pt,
-    row-gutter: 4pt,
-    inset: (x: 1pt, y: 3pt),
-    stroke: (x,y) => if x == 0 or y == 0 { 0.7pt } else { 0.25pt },
-    fill: (c,r) => if c == 0 or r == 0 { luma(240) },
-    align: center + horizon,
-    ..cells
-  )
+table(
+  columns: 11,
+  column-gutter: 1.5pt,
+  row-gutter: 4pt,
+  inset: (x: 1pt, y: 3pt),
 
+  // Conditional stroke
+  stroke: (x, y) => if x == 0 or y == 0 {
+    0.7pt
+  } else {
+    0.25pt
+  },
+
+  // Conditional fill – nice visible alternating rows + header shading
+  fill: (c, r) => {
+    if r == 0 or c == 0 {
+      rgb("#e8e8e8")          // header row & first column
+    } else if calc.rem(r, 2) == 1 {
+       rgb("#c8e8c8")          // darker green on odd content rows
+    } else {
+      white                    // pure white on even content rows
+    }
+  },
+
+  align: center + horizon,
+  ..cells
+)
   pagebreak()
 }
+
+#align(center)[
+  #v(1cm)
+  #text(15pt, weight: "bold")[Logarithmic Scale (Base 10)]
+  #v(12pt)
+
+  #table(
+    columns: (7em, 7em),
+    stroke: 0.7pt + black,
+    inset: 9pt,
+    align: center + horizon,
+
+    // Header row — dark green background
+    table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+    table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+
+    // Row 1 – light green
+    table.cell(fill: rgb("#d8f0d8"))[1],
+    table.cell(fill: rgb("#d8f0d8"))[0.0000],
+
+    // Row 2 – white
+    table.cell(fill: white)[2],
+    table.cell(fill: white)[0.3010],
+
+    // Row 3 – light green
+    table.cell(fill: rgb("#d8f0d8"))[3],
+    table.cell(fill: rgb("#d8f0d8"))[0.4771],
+
+    // Row 4 – white
+    table.cell(fill: white)[4],
+    table.cell(fill: white)[0.6021],
+
+    // Row 5 – light green
+    table.cell(fill: rgb("#d8f0d8"))[5],
+    table.cell(fill: rgb("#d8f0d8"))[0.6990],
+
+    // Row 6 – white
+    table.cell(fill: white)[6],
+    table.cell(fill: white)[0.7782],
+
+    // Row 7 – light green
+    table.cell(fill: rgb("#d8f0d8"))[7],
+    table.cell(fill: rgb("#d8f0d8"))[0.8451],
+
+    // Row 8 – white
+    table.cell(fill: white)[8],
+    table.cell(fill: white)[0.9031],
+
+    // Row 9 – light green
+    table.cell(fill: rgb("#d8f0d8"))[9],
+    table.cell(fill: rgb("#d8f0d8"))[0.9542],
+
+    // Row 10 – white
+    table.cell(fill: white)[10],
+    table.cell(fill: white)[1.0000],
+
+    // Bonus constants – light green
+    table.cell(fill: rgb("#d8f0d8"))[e ≈ 2.71828],
+    table.cell(fill: rgb("#d8f0d8"))[0.4343],
+
+    table.cell(fill: white)[π ≈ 3.14159],
+    table.cell(fill: white)[0.4971],
+  )
+
+  #v(1cm)
+]
