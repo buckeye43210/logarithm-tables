@@ -241,6 +241,8 @@ Now we can fill the crucial entry:
 - $2^3 = 8$        → $log_10 8 = 3 × 0.30103 = 0.90309$
 - $10 / 2 = 5$     → $log_10 5 = 1 - 0.30103 = 0.69897$
 
+
+#align(center)[
 #table(
   columns: (8em, 9em),
   stroke: 0.7pt + black,
@@ -320,7 +322,7 @@ $log_10 6 = log_10 (2 × 3) = 0.30103 + 0.47712 = 0.77815$
   table.cell(fill: white)[8],          table.cell(fill: white)[0.90309],
   table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
   table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
-)
+)]
 
 #pagebreak()
 
@@ -394,14 +396,15 @@ This is exactly the method Briggs and his successors used for the prime 7 — on
 
 #pagebreak()
 
-=== Result used in every printed table since 1624
+=== Result printed in every table since 1624
 
-$log_10 7 = 0.8451$
+$log_10 7 = 0.84510$
 
 (to more decimals: 0.84509804…)
 
 We can now confidently add it to the final table:
 
+#align(center)[
 #table(
   columns: (8em, 9em),
   stroke: 0.7pt + black,
@@ -409,17 +412,17 @@ We can now confidently add it to the final table:
   align: center + horizon,
   table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
   table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.0000],
-  table.cell(fill: white)[2],           table.cell(fill: white)[0.3010],
-  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.4771],
-  table.cell(fill: white)[4],           table.cell(fill: white)[0.6020],
-  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.6990],
-  table.cell(fill: white)[6],           table.cell(fill: white)[0.7782],
-  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[0.8451],
-  table.cell(fill: white)[8],           table.cell(fill: white)[0.9030],
-  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.9542],
-  table.cell(fill: white)[10],          table.cell(fill: white)[1.0000],
-)
+  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
+  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.47713],
+  table.cell(fill: white)[4],           table.cell(fill: white)[0.60206],
+  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
+  table.cell(fill: white)[6],           table.cell(fill: white)[0.77815],
+  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[0.84510],
+  table.cell(fill: white)[8],           table.cell(fill: white)[0.90309],
+  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
+  table.cell(fill: white)[10],          table.cell(fill: white)[1.00000],
+)]
 
 All values derived using 17th-century hand-calculation techniques!
 
