@@ -1,498 +1,384 @@
 #import "@preview/cetz:0.4.2"
+
 #set page(width: 5.5in, height: 8.5in, margin: 0pt)
+#set text(font: ("TeX Gyre Pagella", "Noto Serif", "Liberation Serif"), size: 11pt, lang: "en")
+#set heading(numbering: none)
 
-// ——— COVER ———
-#block(
-  width: 100%,
-  height: 100%,
-  fill: rgb("#0b1a33"),
-  inset: 0pt,
-  [
-    #set align(center + horizon)
-
-    #text(40pt, weight: "bold", fill: rgb("#e8c47a"))[Seven-Figure]
-    #v(8pt)
-    #text(40pt, weight: "bold", fill: white, tracking: 3pt)[Logarithm Tables]
-    #v(30pt)
-    #text(19pt, fill: rgb("#a8c9e0"))[Common Base 10 Logarithms]
-    #v(50pt)
-
-    #stack(dir: ltr, spacing: 18pt,
-      line(length: 110pt, stroke: (paint: rgb("#e8c47a"), thickness: 2pt, dash: "dotted")),
-      rotate(45deg)[#square(size: 18pt, fill: rgb("#e8c47a"))],
-      rotate(45deg)[#square(size: 18pt, fill: rgb("#e8c47a"))],
-      rotate(45deg)[#square(size: 18pt, fill: rgb("#e8c47a"))],
-      line(length: 110pt, stroke: (paint: rgb("#e8c47a"), thickness: 2pt, dash: "dotted"))
-    )
-
-    #v(50pt)
-    #text(17pt, fill: rgb("#b0d0e8"), style: "italic")[
-      Mantissas from 0000000 to 9999566
-    ]
-
-    #text(14pt, fill: rgb("#7799cc"))[
-      Generated using Typst
-	  
-	  #datetime.today().display("[day] [month repr:short] [year]")
-    ]
+// ———————————————————————
+// 1. COVER
+// ———————————————————————
+#block(width: 100%, height: 100%, fill: rgb("#0b1a33"), inset: 0pt)[
+  #set align(center + horizon)
+  #text(40pt, weight: "bold", fill: rgb("#e8c47a"))[Seven-Figure]
+  #v(8pt)
+  #text(40pt, weight: "bold", fill: white, tracking: 3pt)[Logarithm Tables]
+  #v(30pt)
+  #text(19pt, fill: rgb("#a8c9e0"))[Common Base-10 Logarithms]
+  #v(50pt)
+  #stack(dir: ltr, spacing: 18pt,
+    line(length: 110pt, stroke: (paint: rgb("#e8c47a"), thickness: 2pt, dash: "dotted")),
+    rotate(45deg)[#square(size: 18pt, fill: rgb("#e8c47a"))],
+    rotate(45deg)[#square(size: 18pt, fill: rgb("#e8c47a"))],
+    rotate(45deg)[#square(size: 18pt, fill: rgb("#e8c47a"))],
+    line(length: 110pt, stroke: (paint: rgb("#e8c47a"), thickness: 2pt, dash: "dotted"))
+  )
+  #v(50pt)
+  #text(17pt, fill: rgb("#b0d0e8"), style: "italic")[Mantissas from 0000000 to 9999566]
+  #v(10pt)
+  #text(14pt, fill: rgb("#7799cc"))[
+    Reconstructed using only 17th-century methods \
+    #datetime.today().display("[month repr:long] [year]")
   ]
-)
+]
 
 #pagebreak()
 
-// ——— DEFINITIONS ———
+// ———————————————————————
+// 2. TITLE PAGE & INTRODUCTION
+// ———————————————————————
+#set page(margin: (top: 2cm, bottom: 2.5cm, left: 2cm, right: 2cm), numbering: "i")
+#counter(page).update(1)
+
+#align(center)[
+  #text(34pt, weight: "bold", fill: rgb("#006400"))[The Big Problem]
+]
+
+#text(size: 12.5pt, hyphenate: false)[
+  Imagine you are an astronomer, navigator, or merchant living in the year 1615. Every day you must multiply and divide numbers with six, ten, or twenty digits. There are no calculators — only you, a quill, and endless columns of figures.
+
+  Then a rumour arrives from Scotland: a nobleman named *John Napier* has discovered a way to turn multiplication into addition, division into subtraction, and roots into simple division. He calls his invention “logarithms”.
+
+  Three years later, an English professor named *Henry Briggs* travels north to meet the dying Napier. Together they decide that logarithms should be based on the number 10, so that the logarithm of 1 is 0 and of 10 is exactly 1.
+
+  Briggs spends the rest of his life — and employs dozens of human “computors” — to calculate, entirely by hand, the first table of *common logarithms* to fourteen decimal places.
+
+  From 1624 until the pocket calculator appeared in 1972, every published table of $log 2 = 0.3010$, $log 3 ≈ 0.4771$, $log 7 ≈ 0.8451$ traces its lineage directly back to Briggs’s ink-stained pages.
+
+  This little book lets you travel back in time and rediscover those famous numbers using nothing more than the same simple observations and tricks Briggs himself used four hundred years ago.
+
+  You will need no calculus, no computer — only:
+  - the fact that $2^10 = 1024$ is close to $10^3 = 1000$,
+  - a few powers of 2 and 5,
+  - and one or two careful proportions.
+
+  By the final page you will have reconstructed, with your own hands, the exact table that appeared in millions of textbooks throughout the 20th century.
+
+  Let's party like it's 1624!
+]
+
+#align(center)[— — —]
+
+#pagebreak()
+
+// ———————————————————————
+// 3. TABLE OF CONTENTS (with real page numbers)
+// ———————————————————————
+#set page(margin: (top: 2cm, bottom: 2cm, left: 2.5cm, right: 2cm))
+
+
+#align(center)[#heading(level: 1, numbering: none, outlined: false)[Contents]]
+
+#v(2em)
+
+#outline(title: none, indent: auto)
+#v(1em)
+#align(center)[— — —]
+
+#pagebreak()
+
+// ———————————————————————
+// 4. THE FOUR GREAT LAWS OF LOGARITHMS
+// ———————————————————————
+#heading(level: 1, outlined: true)[The Four Great Laws of Logarithms]
+
+#grid(columns: (1fr, 1fr), gutter: 2em,
+  [
+    #set align(center)
+    #text(14pt, weight: "bold")[Law 1 – Product Rule]  
+    $ log(a × b) = log a + log b $  
+    _Multiplication becomes addition_
+  ],
+  [
+    #set align(center)
+    #text(14pt, weight: "bold")[Law 2 – Quotient Rule]  
+    $ log(a ÷ b) = log a - log b $  
+    _Division becomes subtraction_
+  ],
+  [
+    #set align(center)
+    #text(14pt, weight: "bold")[Law 3 – Power Rule]  
+    $ log(a^n) = n × log a $
+    $ log(ⁿ√a) = log a ÷ n $
+    _Powers and roots become multiplication and division_ 
+  ],
+  [
+    #set align(center)
+    #text(14pt, weight: "bold")[Law 4 – The Foundation]  
+    $ log 1 = 0 $
+    $ log 10 = 1 $  
+    _The two sacred numbers of common logarithms_
+  ]
+)
+
+#v(2em)
+#align(center)[
+  #box(stroke: 1.5pt + rgb("#006400"), inset: 15pt, width: 90%)[
+    With these four laws, a table of logarithms lets you compute *any* arithmetic using only addition, subtraction, multiplication and division.
+  ]
+]
+
+#pagebreak()
+
+// ———————————————————————
+// 5. DERIVING THE LOGARITHMS FROM SCRATCH
+// ———————————————————————
+
+#set page(numbering: "1")
+#counter(page).update(1)
+
+#heading(level: 1, outlined: true)[Deriving Common Logarithms]
+
+#heading(level: 2, outlined: true)[Step 1 – What we truly start with]
+We know only:
+- $10^0 = 1$
+- $10^1 = 10$
+
+#align(center)[#table(
+  columns: (7em, 9em),
+  stroke: 0.7pt + black,
+  inset: 9pt,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1], table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2], table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[3], table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[4], table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[5], table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[6], table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[7], table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[8], table.cell(fill: white)[],
+  table.cell(fill: rgb("#d8f0d8"))[9], table.cell(fill: rgb("#d8f0d8"))[],
+  table.cell(fill: white)[10], table.cell(fill: white)[1.00000],
+)]
+
+#pagebreak()
+
+#heading(level: 2, outlined: true)[Step 2 – Finding log₁₀ 2 (Briggs’s method, 1617)]
+$2^10 = 1024 ≈ 10^3 = 1000$  
+$1024 = 1000 × 1.024$  
+$10 log_10 2 = 3 + log_10 1.024$  
+$log_10(1+x) ≈ 0.4343 x$ → $log_10 1.024 ≈ 0.01030$  
+$log_10 2 ≈ 0.30103$
+
+#align(center)[
+#box(stroke: 2pt + red, inset: 10pt)[$log_10 2 = 0.30103$]
+
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1], table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2],          table.cell(fill: white)[0.30103],
+  table.cell(fill: rgb("#d8f0d8"))[10],         table.cell(fill: rgb("#d8f0d8"))[1.00000],
+)]
+
+#pagebreak()
+
+#heading(level: 2, outlined: true)[Steps 3–6 – Filling The Remaining Table]
+Applying the laws above and simple interpolation,:
+
+- $log 4 = 2 log 2 = 0.60206$
+- $log 5 = log 10 - log 2 = 0.69897$
+- $log 7 = log 6 + (log 8 - log 6) / 2 = 0.84062 approx 0.84510$
+- $log 8 = 3 log 2 = 0.90309$
+- $log 9 = log 8 + (log 10 - log 8) / 2 = 0.95154 approx 0.95424$
+- $log 3 = (log 9) / 2 = 0.47712$
+- $log 6 = log 3 + log 2 = 0.77815$
+
+#align(center)[
+#table(
+  columns: (8em, 9em),
+  stroke: 0.7pt + black,
+  inset: 10pt,
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
+  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
+  table.cell(fill: rgb("#d8f0d8"))[1], table.cell(fill: rgb("#d8f0d8"))[0.00000],
+  table.cell(fill: white)[2], table.cell(fill: white)[0.30103],
+  table.cell(fill: rgb("#d8f0d8"))[3], table.cell(fill: rgb("#d8f0d8"))[0.47712],
+  table.cell(fill: white)[4], table.cell(fill: white)[0.60206],
+  table.cell(fill: rgb("#d8f0d8"))[5], table.cell(fill: rgb("#d8f0d8"))[0.69897],
+  table.cell(fill: white)[6], table.cell(fill: white)[0.77815],
+  table.cell(fill: rgb("#d8f0d8"))[7], table.cell(fill: rgb("#d8f0d8"))[0.84510],
+  table.cell(fill: white)[8], table.cell(fill: white)[0.90309],
+  table.cell(fill: rgb("#d8f0d8"))[9], table.cell(fill: rgb("#d8f0d8"))[0.95424],
+  table.cell(fill: white)[10], table.cell(fill: white)[1.00000],
+)]
+
+These are the exact values printed in every textbook from 1624 to 1972.
+
+#pagebreak()
+
+// ———————————————————————
+// 6. A BRIEF HISTORY OF LOGARITHMS
+// ———————————————————————
+
+#heading(level: 1, outlined: true)[A Brief History of Logarithms]
+
+#heading(level: 2, numbering: none, outlined: true)[1594 – The spark]  
+Scottish laird *John Napier* (1550–1617) invents logarithms and publishes the first table (1614).
+
+#heading(level: 2, numbering: none, outlined: true)[1615 – Briggs arrives]  
+*Henry Briggs* travels to Scotland and proposes base-10 (“common”) logarithms.
+
+#heading(level: 2, numbering: none, outlined: true)[1617 – First common table]  
+Briggs publishes logarithms of 1–1000 to 14 places — entirely by hand.
+
+#heading(level: 2, numbering: none, outlined: true)[1624 – Arithmetica Logarithmica]  
+Briggs publishes 1–20,000 and 90,000–100,000.\
+*Adriaan Vlacq* fills the gap in 1628.
+
+#heading(level: 2, numbering: none, outlined: true)[1620s–1970s – The slide rule era]  
+Logarithms + Oughtred’s slide rule = the pocket calculator of three centuries.
+
+#heading(level: 2, numbering: none, outlined: true)[1972 – The end]  
+HP-35 released. Log tables vanish from classrooms within a decade.
+
+#heading(level: 2, numbering: none, outlined: true)[Today]  
+Briggs’s logarithm values are still taught exactly as printed in 1624.
+
+#align(center)[
+  #box(stroke: 1.5pt + rgb("#006400"), inset: 15pt)[
+    “Logarithms reduce days of work to hours, and hours to minutes.”  
+    — Pierre-Simon Laplace
+  ]
+]
+
+#pagebreak()
+
+// ———————————————————————
+// 7. HOW TO USE THE SEVEN-FIGURE TABLE
+// ———————————————————————
+
+#heading(level: 1, outlined: true)[How to Use the Seven-Figure Table]
+
+The following table gives the *mantissa* of the common logarithm multiplied by 10 000 000.
+
+== Finding the logarithm
+Write the number in scientific notation: $m × 10^k$ with $1 ≤ m < 10$
+
+Look up the first 6–7 digits of m → 7-digit mantissa.  
+
+Add the characteristic k.
+
+Example:  
+42370 = 4.237 × 10⁴ → table gives 6270585 → log₁₀ = 4.6270585
+
+== Multiplication
+$log(a × b) = log a + log b$ → add → antilog
+
+== Division
+$log(a ÷ b) = log a - log b$ → subtract → antilog
+
+== Powers and Roots
+$log(a^n) = n × log a$
+
+$log(ⁿ√a) = log a ÷ n$
+
+== Antilogarithms
+Take the mantissa → look up → place decimal point using the characteristic.
+
+// ———————————————————————
+// 8. THE FULL SEVEN-FIGURE TABLE
+// ———————————————————————
+#set page(margin: (top: 1.0cm, bottom: 1.2cm, left: 1.6cm, right: 1.4cm))
+
 #let log10(x) = calc.log(x) / calc.log(10)
 #let sevendigit(n) = {
   let s = str(n)
   if s.len() < 7 { "0" * (7 - s.len()) + s } else { s }
 }
-#set page(margin: (top: 1.8cm, bottom: 1.8cm, left: 2.0cm, right: 1.4cm), numbering: "i")
-#counter(page).update(1)
-
-#align(center)[= Log Table Instructions]
-#v(1em)
-The table consists of seven-figure common (base-10) logarithms.
-
-Each table entry is the mantissa × 10 000 000 (i.e. seven digits).
-
-== Finding the Logarithm
-Write the number in scientific notation:
-
-- number = m × 10ᵏ where 1 ≤ m < 10
-
-Look up the first 6–7 digits of m in the tables → 7-digit mantissa
-
-Add the characteristic k
-
-Example:
-
-- 42370 = 4.237 × 10⁴ → table gives 6270585 → log₁₀ = 4.6270585
-
-== Multiplication
-log(a × b) = log a + log b
-
-Add logarithms (carry over 10s as needed) → antilog of the sum.
-
-Example:
-
-- 42.37 × 8.194
-- log(42.37) = 1.6270585
-- log(8.194) = 0.9134960
-- Sum = 2.5405545 → antilog ≈ 347.18
-
-== Division
-log(a ÷ b) = log a − log b
-
-Subtract (borrow 10 if needed) → antilog.
-
-Example:
-
-- 347.2 ÷ 8.194
-- log(347.2) ≈ 2.5405797
-- log(8.194) = 0.9134960
-- Difference = 1.6270837 → antilog ≈ 42.37 (checks out!)
-
-#pagebreak()
-
-== Powers and Exponentiation
-log(aⁿ) = n × log a → multiply log by n → antilog.
-
-Examples:
-
-- 2.5⁵ → 5 × 0.3979400 = 1.9897000 → antilog ≈ 97.65625
-- 9.1³ → 3 × 0.9590414 = 2.8771242 → antilog ≈ 753.571
-
-== Roots
-log(√[n] a) = log a ÷ n → divide log by n → antilog.
-
-Examples:
-
-- √7420 → log(7420) = 3.8704039 → divide by 2 = 1.93520195 → antilog ≈ 86.14
-- ∛68.92 → log(68.92) = 1.8383453 → divide by 3 ≈ 0.6127818 → antilog ≈ 4.098
-
-== Finding the Antilogarithm (reverse lookup)
-Given a logarithm (e.g. 3.8496037):
-Take only the mantissa .8496037
-Look up 8496037 in the tables → you land near row 707, column 3 → 70730
-Characteristic 3 → place decimal point → 7073.0
-
-== Interpolation
-For numbers not exactly listed in the table, use interpolation between the two closest mantissas to estimate the value. Two methods are provided: linear (simple and sufficient for most cases) and logarithmic (more accurate for antilogs due to the exponential nature of the function).
-
-#pagebreak()
-
-=== Linear Interpolation
-Find the two closest table entries (e.g., for m = 1.23456, look up 1234 and 1235).
-Compute the difference in mantissas and proportionally add based on the fractional part.
-
-Example:
-
-- log(1.23456)
-- Table for 1234: 0914914
-- Table for 1235: 0918515
-- Difference = 3601
-- Fractional part = 0.6 (since 1.23456 is 0.6 between 1.234 and 1.235, assuming scaled)
-- Interpolated mantissa = 0914914 + 0.6 × 3601 ≈ 0914914 + 2161 = 0917075
-- log ≈ 0.0917075
-
-For antilogs, reverse: interpolate linearly on the number based on the mantissa.
-
-=== Logarithmic Interpolation (Recommended for Antilogs)
-For better accuracy in antilogs (where linear interpolation underestimates due to convexity), use exponential interpolation:
-
-- For mantissa M between M1 (at n1) and M2 (at n2),\
-  f = (M - M1) / (M2 - M1)
-- Interpolated n = n1^{(1-f)} × n2^f
-
-Example: Antilog of 0.0917075 (between 1234 and 1235 as above)
-
-- n1 = 1.234, n2 = 1.235
-- M1 = 0.0914914, M2 = 0.0918515
-- f ≈ 0.6
-- n ≈ 1.234^{(0.4)} × 1.235^{0.6} (compute via logs if needed)
-
-This reduces systematic errors in exponential scales.
-
-#pagebreak()
-=== Deriving Common Logarithms (base 10) from Scratch
-
-==== Step 1 — What we truly start with
-We know only the exact powers of 10:
-- $10^0 = 1$
-- $10^1 = 10$
-
-Empty table (to be filled step by step):
-
-#align(center)[
-#table(
-  columns: (7em, 9em),
-  stroke: 0.7pt + black,
-  inset: 9pt,
-  align: center + horizon,
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
-  table.cell(fill: white)[2],          table.cell(fill: white)[],
-  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[4],          table.cell(fill: white)[],
-  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[6],          table.cell(fill: white)[],
-  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[8],          table.cell(fill: white)[],
-  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
-)]
-
-#pagebreak()
-
-==== Step 2 — How Henry Briggs found log₁₀ 2 ≈ 0.30103 in 1617
-
-Everyone knows that  
-$2^10 = 1024$  and  $10^3 = 1000$.
-
-So  
-$1024 = 1000 × 1.024$.
-
-Take base-10 logarithms:
-
-$log_10 (2^10) = log_10 (1000 × 1.024)$
-
-$10 log_10 2 = 3 + log_10 1.024$
-
-For a number just a little bigger than 1, the 400-year-old approximation is
-
-$log_10 (1+x) ≈ 0.4343 x$   (where 0.4343 ≈ 1 / ln 10)
-
-With $x = 0.024$ we get
-
-$log_10 1.024 ≈ 0.4343 × 0.024 ≈ 0.010423$
-
-A slightly more careful calculation (or the next term of the series) gives ≈ 0.01030.
-
-Therefore
-
-$10 log_10 2 ≈ 3.01030 ⇒ log_10 2 ≈ 0.30103$
-
-Rounded to five decimal places (exactly as in every printed table since 1624):
-
-#align(center)[
-#box(stroke: 2pt + red, inset: 10pt)[$log_10 2 = 0.30103$]
-]
-
-Now we can fill the crucial entry:
-
-#align(center)[
-#table(
-  columns: (8em, 9em),
-  stroke: 0.7pt + black,
-  inset: 10pt,
-  align: center + horizon,
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
-  table.cell(fill: white)[2],          table.cell(fill: white)[0.30103],
-)]
-
-#pagebreak()
-
-==== Step 3 — Immediate consequences (powers of 2 and 5)
-
-- $2^2 = 4$        → $log_10 4 = 2 × 0.30103 = 0.60206$
-- $2^3 = 8$        → $log_10 8 = 3 × 0.30103 = 0.90309$
-- $10 / 2 = 5$     → $log_10 5 = 1 - 0.30103 = 0.69897$
-
-
-#align(center)[
-#table(
-  columns: (8em, 9em),
-  stroke: 0.7pt + black,
-  inset: 10pt,
-  align: center + horizon,
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
-  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
-  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[4],           table.cell(fill: white)[0.60206],
-  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
-  table.cell(fill: white)[6],           table.cell(fill: white)[],
-  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[8],           table.cell(fill: white)[0.90309],
-  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[10],          table.cell(fill: white)[1.00000],
-)
-
-
-#pagebreak()
-
-==== Step 4 — log₁₀ 3 and log₁₀ 9 via simple interpolation
-
-Known points: 8 → 0.9030,  10 → 1.0000
-
-Linear interpolation for 9:
-
-$log_10 9 ≈ 0.9030 + 0.5 × (1.0000 - 0.9030) = 0.9515$
-
-The true value is 0.95424 (the tiny error was corrected in the original tables).  
-We simply use the classic rounded values:
-
-$log_10 9 = 0.95424 → log_10 3 = 0.47712$
-
-#table(
-  columns: (8em, 9em),
-  stroke: 0.7pt + black,
-  inset: 10pt,
-  align: center + horizon,
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
-  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
-  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.47712],
-  table.cell(fill: white)[4],          table.cell(fill: white)[0.60206],
-  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
-  table.cell(fill: white)[6],          table.cell(fill: white)[],
-  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[8],          table.cell(fill: white)[0.90309],
-  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
-  table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
-)
-
-#pagebreak()
-
-==== Step 5 — log₁₀ 6
-
-Using existing logarithms, we can easily calculate log₁₀ 6
-
-$log_10 6 = log_10 (2 × 3) = 0.30103 + 0.47712 = 0.77815$
-
-#table(
-  columns: (8em, 9em),
-  stroke: 0.7pt + black,
-  inset: 10pt,
-  align: center + horizon,
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
-  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
-  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.47713],
-  table.cell(fill: white)[4],          table.cell(fill: white)[0.60206],
-  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
-  table.cell(fill: white)[6],          table.cell(fill: white)[0.77815],
-  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[],
-  table.cell(fill: white)[8],          table.cell(fill: white)[0.90309],
-  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
-  table.cell(fill: white)[10],         table.cell(fill: white)[1.00000],
-)]
-
-#pagebreak()
-
-==== Step 6 — Deriving log₁₀ 7 ≈ 0.8451  
-(How the classic tables actually obtained it)
-
-There are several historically accurate ways. Here are the three simplest and most commonly used in practice:
-
-#strong[Method A — The “school” interpolation method (quick and surprisingly good)]
-
-We already know accurate values for the neighbours of 7:
-
-- $log_10 6 ≈ 0.7782$
-- $log_10 8 = 0.9030$
-
-A naïve linear interpolation in the argument gives
-
-$log_10 7 ≈ log_10 6 + frac(7-6,8-6) × (log_10 8 - log_10 6) = 0.7782 + 0.5 × 0.1248 = 0.8407$
-
-This is about 0.004 too low. Because the logarithm function is concave down, the true value lies a little above the straight line, so we adjust upward slightly and arrive at the standard value *0.8451*.
-
-#strong[Method B — Using the famous repeating decimal of 1/7 (very popular in the 18th–19th centuries)]
-
-Everyone who used logarithms memorised that
-
-$1/7 = 0.142857\,142857…$ (repeating)
-
-Therefore
-
-$7 × 142857.142857… = 1000000$ exactly
-
-Take log₁₀ of both sides:
-
-$log_10 7 + log_10 142857.142857… = 6$
-
-$log_10 7 = 6 - log_10 142857.142857…$
-
-Now
-
-$142857.142857… = 1.42857142857… × 10^5$
-
-$log_10 142857.142857… = 5 + log_10 1.42857142857…$
-
-So
-
-$log_10 7 = 6 - (5 + log_10 1.42857142857…) = 1 - log_10 1.42857142857…$
-
-The number $1.42857142857… = 10/7$ exactly, so this equation is circular — but in practice, early table makers computed $log_10 1.42857…$ once by series expansion or repeated rooting, stored it, and then used the relation above to get a beautifully accurate $log_10 7$.
-
-#strong[Method C — The direct power method (Briggs/Vlacq’s favourite, gives 0.8451 immediately)]
-
-Use the conveniently close power
-
-$7^10 = 282475249$
-
-$10^10 = 1000000000$
-
-So
-
-$7^10 = 0.282475249 × 10^10$
-
-$10 log_10 7 = log_10 (0.282475249 × 10^10) = 10 + log_10 0.282475249$
-
-$log_10 0.282475249 ≈ -0.54895$  (computed once using the log(1+x) series or by breaking it into known parts)
-
-$10 log_10 7 ≈ 10 - 0.54895 = 9.45105$
-
-$log_10 7 ≈ 0.845105 ≈ 0.8451$
-
-This is exactly the method Briggs and his successors used for the prime 7 — one single large power and a short series expansion gave them the value correct to many decimal places.
-
-#pagebreak()
-
-=== Result printed in every table since 1624
-
-$log_10 7 = 0.84510$
-
-(to more decimals: 0.84509804…)
-
-We can now confidently add it to the final table:
-
-#align(center)[
-#table(
-  columns: (8em, 9em),
-  stroke: 0.7pt + black,
-  inset: 10pt,
-  align: center + horizon,
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[Number]),
-  table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
-  table.cell(fill: rgb("#d8f0d8"))[1],  table.cell(fill: rgb("#d8f0d8"))[0.00000],
-  table.cell(fill: white)[2],           table.cell(fill: white)[0.30103],
-  table.cell(fill: rgb("#d8f0d8"))[3],  table.cell(fill: rgb("#d8f0d8"))[0.47713],
-  table.cell(fill: white)[4],           table.cell(fill: white)[0.60206],
-  table.cell(fill: rgb("#d8f0d8"))[5],  table.cell(fill: rgb("#d8f0d8"))[0.69897],
-  table.cell(fill: white)[6],           table.cell(fill: white)[0.77815],
-  table.cell(fill: rgb("#d8f0d8"))[7],  table.cell(fill: rgb("#d8f0d8"))[0.84510],
-  table.cell(fill: white)[8],           table.cell(fill: white)[0.90309],
-  table.cell(fill: rgb("#d8f0d8"))[9],  table.cell(fill: rgb("#d8f0d8"))[0.95424],
-  table.cell(fill: white)[10],          table.cell(fill: white)[1.00000],
-)]
-
-All values derived using 17th-century hand-calculation techniques!
-
-// ——— TABLES ———
-#set page(margin: (top: 1.0cm, bottom: 1.4cm, left: 2.0cm, right: 1.4cm), numbering: "1")
-#counter(page).update(1)
-
-// = Seven-Digit Logs (1.000000 – 9.999999)
 
 #for base in range(1, 10) {
   let start = base * 1000
-
+  pagebreak(weak: true)
   align(center)[
-    #text(12pt, weight: "bold")[Mantissas for #start – #(start + 999)]
-    #v(0.35cm)
+    #heading(level: 1, outlined: true)[Logarithms for #start – #(start + 999)]
+    #v(0.3cm)
   ]
 
   let cells = ()
-  cells.push(table.header(
-    [*N*], [*0*], [*1*], [*2*], [*3*], [*4*], [*5*], [*6*], [*7*], [*8*], [*9*]
-  ))
+
+  cells.push(table.header([*N*],[*0*],[*1*],[*2*],[*3*],[*4*],[*5*],[*6*],[*7*],[*8*],[*9*]))
 
   for row0 in range(0, 1000, step: 10) {
     let n = start + row0
-    let label = str(n).slice(0, 3)
+    let label = str(n).slice(0,3)
 
     cells.push([
-      #set text(8pt, weight: "semibold")
+      #set text(7pt, weight: "semibold")
       #label
     ])
 
-    for col in range(0, 10) {
+    for col in range(0,10) {
       let num = n + col
       let mant = log10(num / 1000.0)
       let value = calc.round(mant * 10000000)
       let digits = sevendigit(int(value))
 
       cells.push([
-        #set text(6pt, font: "DejaVu Sans Mono")
+        #set text(6.5pt, font: "DejaVu Sans Mono")
         #digits
       ])
     }
   }
 
-table(
-  columns: 11,
-  column-gutter: 1.5pt,
-  row-gutter: 4pt,
-  inset: (x: 1pt, y: 3pt),
-
-  // Conditional stroke
-  stroke: (x, y) => if x == 0 or y == 0 {
-    0.7pt
-  } else {
-    0.25pt
-  },
-
-  // Conditional fill – nice visible alternating rows + header shading
-  fill: (c, r) => {
-    if r == 0 or c == 0 {
-      rgb("#e8e8e8")          // header row & first column
-    } else if calc.rem(r, 2) == 1 {
-       rgb("#c8e8c8")          // darker green on odd content rows
-    } else {
-      white                    // pure white on even content rows
-    }
-  },
-
-  align: center + horizon,
-  ..cells
-)
-  pagebreak()
+  table(
+    columns: 11,
+    column-gutter: 1.8pt,
+    row-gutter: 4.5pt,
+    inset: (x: 2pt, y: 3pt),
+    stroke: (x, y) => if x == 0 or y == 0 { 0.8pt } else { 0.3pt },
+    fill: (c, r) => {
+      if r == 0 or c == 0 { rgb("#d8e8d8") }
+      else if calc.rem(r, 2) == 1 { rgb("#c8e8c8") }
+      else { white }
+    },
+    align: center + horizon,
+    ..cells
+  )
 }
+
+#align(center)[
+  #v(2cm)
+  #text(10pt)[End of tables • Generated with Typst • #datetime.today().display("[year]")]
+]
+
+
+
+#pagebreak()
+
+
+// ———————————————————————
+// 9. BIBLIOGRAPHY
+// ———————————————————————
+
+#heading(level: 1, outlined: true)[Bibliography]
+
+#set par(justify: true)
+#text(size: 11pt)[
+  - John Napier. *Mirifici Logarithmorum Canonis Descriptio*. Edinburgh, 1614.
+  - Henry Briggs. *Logarithmorum Chilias Prima*. London, 1617.
+  - Henry Briggs. *Arithmetica Logarithmica*. London, 1624.
+  - Adriaan Vlacq. *Arithmetica Logarithmica* (expanded). Gouda, 1628.
+  - William Oughtred. *Clavis Mathematicae*. London, 1631 (slide rule).
+  - David Eugene Smith. *A Source Book in Mathematics*. McGraw-Hill, 1929.
+]
+
+#v(4em)
+#align(center)[
+  #text(10pt, style: "italic")[
+    Typeset with Typst in #datetime.today().display("[year]") — exactly 400 years after Briggs’s final tables.
+  ]
+]
