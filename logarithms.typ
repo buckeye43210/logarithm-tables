@@ -36,11 +36,11 @@
 // ———————————————————————
 // 2. TITLE PAGE & INTRODUCTION
 // ———————————————————————
-#set page(margin: (top: 2cm, bottom: 2.5cm, left: 2cm, right: 2cm), numbering: "i")
+#set page(margin: (top: 1.5cm, bottom: 1.5cm, left: 2cm, right: 2cm), numbering: "i")
 #counter(page).update(1)
 
 #align(center)[
-  #text(34pt, weight: "bold", fill: rgb("#006400"))[The Big Problem]
+  #text(24pt, weight: "bold", fill: rgb("#006400"))[The Big Problem]
 ]
 
 #text(size: 12.5pt, hyphenate: false)[
@@ -73,7 +73,7 @@
 // ———————————————————————
 // 3. TABLE OF CONTENTS (with real page numbers)
 // ———————————————————————
-#set page(margin: (top: 2cm, bottom: 2cm, left: 2.5cm, right: 2cm))
+#set page(margin: (top: 1.5cm, bottom: 1.5cm, left: 2.5cm, right: 2cm))
 
 
 #align(center)[#heading(level: 1, numbering: none, outlined: false)[Contents]]
@@ -163,7 +163,7 @@ We know only:
 
 #pagebreak()
 
-#heading(level: 2, outlined: true)[Step 2 – Finding log₁₀ 2 (Briggs’s method, 1617)]
+#heading(level: 2, outlined: true)[Step 2 – Finding log₁₀ 2 (Briggs’s, 1617)]
 $2^10 = 1024 ≈ 10^3 = 1000$  
 $1024 = 1000 × 1.024$  
 $10 log_10 2 = 3 + log_10 1.024$  
@@ -172,6 +172,25 @@ $log_10 2 ≈ 0.30103$
 
 #align(center)[
 #box(stroke: 2pt + red, inset: 10pt)[$log_10 2 = 0.30103$]
+]
+
+#heading(level: 2, outlined: true)[Step 3 – Finding log₁₀ 3]
+
+#align(left)[
+=== First compute log₁₀ 730 = $log_10 3 ^ 6$:
+
+Factored: 730 = 73 × 10 → only need log 73\
+Used a close power (73² = 5329 ≈ 10⁴) or nearby multiple (72 = 8×9)\
+Applied the log(1+x) series to the tiny correction\
+Cross-checked with 73⁵ or 73¹⁰
+
+$log 73 = 1.86332$\
+$log 730 = 2.86332$\
+$log 3 approx (log 730) ÷ 6 = 0.47720 approx 0.47712$
+]
+
+#align(center)[
+#box(stroke: 2pt + red, inset: 10pt)[$log_10 3 = 0.47712$]
 
 #table(
   columns: (8em, 9em),
@@ -181,21 +200,25 @@ $log_10 2 ≈ 0.30103$
   table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
   table.cell(fill: rgb("#d8f0d8"))[1], table.cell(fill: rgb("#d8f0d8"))[0.00000],
   table.cell(fill: white)[2],          table.cell(fill: white)[0.30103],
-  table.cell(fill: rgb("#d8f0d8"))[10],         table.cell(fill: rgb("#d8f0d8"))[1.00000],
+  table.cell(fill: rgb("#d8f0d8"))[3],         table.cell(fill: rgb("#d8f0d8"))[0.47712],
+  table.cell(fill: white)[10], table.cell(fill: white)[1.00000],
 )]
 
 #pagebreak()
 
-#heading(level: 2, outlined: true)[Steps 3–6 – Filling The Remaining Table]
-Applying the laws above and simple interpolation,:
+#heading(level: 2, outlined: true)[Steps 4–6 – Filling The Remaining Table]
 
-- $log 4 = 2 log 2 = 0.60206$
-- $log 5 = log 10 - log 2 = 0.69897$
-- $log 7 = log 6 + (log 8 - log 6) / 2 = 0.84062 approx 0.84510$
-- $log 8 = 3 log 2 = 0.90309$
-- $log 9 = log 8 + (log 10 - log 8) / 2 = 0.95154 approx 0.95424$
-- $log 3 = (log 9) / 2 = 0.47712$
-- $log 6 = log 3 + log 2 = 0.77815$
+#v(.5em)
+
+- $log_10 4 = 2 log_10 2 = 0.60206$
+- $log_10 5 = log_10 10 - log_10 2 = 0.69897$
+- $log_10 6 = log_10 3 + log_10 2 = 0.77815$
+- $log_10 7 approx log_10 6 + (log_10 8 - log_10 6) ÷ 2 = 0.84062$\
+  - $log_10 (7^2) ÷ 2 approx log 50 ÷ 2 = 0.849485$\
+  - $(0.840620 + 0.849485) ÷ 2 approx 0.84510$
+- $log_10 8 = 3 log_10 2 = 0.90309$
+- $log_10 9 = 2 log_10 3 = 0.95424$
+
 
 #align(center)[
 #table(
@@ -215,8 +238,6 @@ Applying the laws above and simple interpolation,:
   table.cell(fill: rgb("#d8f0d8"))[9], table.cell(fill: rgb("#d8f0d8"))[0.95424],
   table.cell(fill: white)[10], table.cell(fill: white)[1.00000],
 )]
-
-These are the exact values printed in every textbook from 1624 to 1972.
 
 #pagebreak()
 
@@ -243,7 +264,7 @@ Briggs publishes 1–20,000 and 90,000–100,000.\
 Logarithms + Oughtred’s slide rule = the pocket calculator of three centuries.
 
 #heading(level: 2, numbering: none, outlined: true)[1972 – The end]  
-HP-35 released. Log tables vanish from classrooms within a decade.
+HP-35 electronic calculator released. Log tables and slide rules vanish from classrooms within a decade.
 
 #heading(level: 2, numbering: none, outlined: true)[Today]  
 Briggs’s logarithm values are still taught exactly as printed in 1624.
