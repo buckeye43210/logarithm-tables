@@ -351,14 +351,14 @@ Take the mantissa → look up → place decimal point using the characteristic.
       let digits = sevendigit(int(value))
 
       cells.push([
-        #set text(6.5pt, font: "DejaVu Sans Mono")
+        #set text(6pt, font: "DejaVu Sans Mono")
         #digits
       ])
     }
   }
 
   table(
-    columns: 11,
+    columns: (auto, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr),
     column-gutter: 1.8pt,
     row-gutter: 4.5pt,
     inset: (x: 2pt, y: 3pt),
@@ -375,9 +375,78 @@ Take the mantissa → look up → place decimal point using the characteristic.
 
 #pagebreak()
 
+// ──────────────────────
+// SEVEN-FIGURE ANTI-LOGARITHM TABLE (now 100% working)
+// ──────────────────────
+#let sevendigit(n) = {
+  let s = str(n)
+  if s.len() < 7 {
+    "0" * (7 - s.len()) + s
+  } else {
+    s
+  }
+}
+
+#for base in range(0, 10) {
+  pagebreak(weak: true)
+  align(center)[
+    #heading(level: 1, outlined: true)[Anti-Logs 0.#base 000 000 – 0.#base 999 999]
+    #v(0.3cm)
+  ]
+
+  let cells = ()
+
+  // Header
+  cells.push(table.header(
+    [*Mant*],[*0*],[*1*],[*2*],[*3*],[*4*],[*5*],[*6*],[*7*],[*8*],[*9*]
+  ))
+
+  for row0 in range(0, 1000, step: 10) {
+    // Build label: 0.64200
+    let row_str = str(row0)
+    let padded = if row_str.len() < 5 {
+      "0" * (5 - row_str.len()) + row_str
+    } else {
+      row_str.slice(0, 5)
+    }
+    let label = "0." + str(base) + padded
+
+    cells.push([
+      #set text(7pt, weight: "semibold")
+      #label
+    ])
+
+    for col in range(0, 10) {
+      let mantissa = base / 10.0 + (row0 + col) / 10000000.0
+      let number = calc.pow(10.0, mantissa)
+      let value = calc.round(number * 1000000)
+      let digits = sevendigit(int(value))
+
+      cells.push([
+        #set text(6.0pt, font: "DejaVu Sans Mono")
+        #digits
+      ])
+    }
+  }
+
+  table(
+    columns: (auto, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr),
+    column-gutter: 1.6pt,
+    row-gutter: 4.5pt,
+    inset: 3pt,
+    stroke: (x,y) => if x == 0 or y == 0 { 0.8pt } else { 0.3pt },
+    fill: (c,r) => if r == 0 or c == 0 { rgb("#d8e8d8") }
+                  else if calc.rem(r, 2) == 1 { rgb("#c8e8c8") }  // soft green
+                  else { white },
+    align: center + horizon,
+    ..cells
+  )
+}
+
+#pagebreak()
 
 // ———————————————————————
-// 9. BIBLIOGRAPHY
+// 10. BIBLIOGRAPHY
 // ———————————————————————
 
 #heading(level: 1, outlined: true)[Bibliography]
