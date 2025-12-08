@@ -200,8 +200,9 @@ $log 3 approx (log 730) ÷ 6 = 0.47720 approx 0.47712$
   table.cell(fill: rgb("#006400"), text(white, weight: "bold")[log₁₀]),
   table.cell(fill: rgb("#d8f0d8"))[1], table.cell(fill: rgb("#d8f0d8"))[0.00000],
   table.cell(fill: white)[2],          table.cell(fill: white)[0.30103],
-  table.cell(fill: rgb("#d8f0d8"))[3],         table.cell(fill: rgb("#d8f0d8"))[0.47712],
-  table.cell(fill: white)[10], table.cell(fill: white)[1.00000],
+  table.cell(fill: rgb("#d8f0d8"))[3], table.cell(fill: rgb("#d8f0d8"))[0.47712],
+  table.cell(fill: white)[...],        table.cell(fill: white)[...],
+  table.cell(fill:  rgb("#d8f0d8"))[10],         table.cell(fill:  rgb("#d8f0d8"))[1.00000],
 )]
 
 #pagebreak()
@@ -219,6 +220,7 @@ $log 3 approx (log 730) ÷ 6 = 0.47720 approx 0.47712$
 - $log_10 8 = 3 log_10 2 = 0.90309$
 - $log_10 9 = 2 log_10 3 = 0.95424$
 
+#v(3em)
 
 #align(center)[
 #table(
@@ -370,13 +372,6 @@ Take the mantissa → look up → place decimal point using the characteristic.
     ..cells
   )
 }
-
-#align(center)[
-  #v(2cm)
-  #text(10pt)[End of tables • Generated with Typst • #datetime.today().display("[year]")]
-]
-
-
 
 #pagebreak()
 
